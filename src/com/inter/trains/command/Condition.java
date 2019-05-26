@@ -4,13 +4,15 @@ package com.inter.trains.command;
 /**
  * condition class for command
  * EG:
- *    stops le 3
+ * stops le 3
  */
 public class Condition {
 
-    KeyWord keyWord;
-    OperSymbol operSymbol;
-    int value;
+    private KeyWord keyWord;
+
+    private OperSymbol operSymbol;
+
+    private int value;
 
     public Condition(KeyWord keyWord, OperSymbol operSymbol, int value) {
         this.keyWord = keyWord;
@@ -43,7 +45,7 @@ public class Condition {
         return value;
     }
 
-    public void valuePlus(int v){
+    public void valuePlus(int v) {
         this.value += v;
     }
 

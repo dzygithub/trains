@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Main {
 
-    static final String DEFAULT_GRAPH_DATA_PATH = "graph.txt";
-    static final String DEFAULT_REQ_DATA_PATH = "command.txt";
+    private static final String DEFAULT_GRAPH_DATA_PATH = "graph.txt";
+    private static final String DEFAULT_REQ_DATA_PATH = "command.txt";
 
     private String[] args;
 
