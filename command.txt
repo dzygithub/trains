@@ -1,0 +1,10 @@
+Distance? A-B-C
+Distance? A-D
+Distance? A-D-C
+Distance? A-E-B-C-D
+Distance? A-E-D
+AvailableRoutes? C-C : stops le 3
+AvailableRoutes? A-C : stops eq 4
+ShortestDistance? A-C
+ShortestDistance? B-B
+AvailableRoutes? C-C : distance lt 30
