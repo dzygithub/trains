@@ -1,6 +1,9 @@
 package test.com.inter.trains.command;
 
-import com.inter.trains.command.Command;
+import com.inter.trains.command.*;
+import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,7 +27,7 @@ public class CommandTest {
             assertEquals(1, command.getConditionList().size());
             assertEquals(3, command.getConditionList().get(0).getValue());
             assertEquals("stops", command.getConditionList().get(0).getKeyWord().toString());
-            assertEquals("le", command.getConditionList().get(0).getOperSymbol().toString());
+            assertEquals("le", command.getConditionList().get(0).getRelationSymbol().toString());
             assertEquals("AvailableRoutes", command.getExecutorName());
 
         } catch (Exception e) {
@@ -57,6 +60,23 @@ public class CommandTest {
         }catch (Exception e) {
             assertEquals("operSymbol of > is not supported.", e.getMessage());
         }
+    }
+
+    @Test
+    public void parseCondition() throws Exception {
+        String commandStr1 = "AvailableRoutes? C-C : distance lt  30 and  distance gt 16 or stops le 5";
+        try{
+            Command command = new Command(commandStr1);
+            List<Condition> conditionList = command.getConditionList();
+            assertEquals(3, conditionList.size());
+            assertEquals(RelationSymbol.LE, conditionList.get(2).getRelationSymbol());
+            assertEquals(KeyWord.STOPS, conditionList.get(2).getKeyWord());
+            assertEquals(LogicSymbol.OR, conditionList.get(2).getLogicSymbol());
+            assertEquals(5, conditionList.get(2).getValue());
+        }catch (Exception e) {
+            assertEquals(1, 2);
+        }
+
     }
 
 }

@@ -11,13 +11,13 @@ import java.util.List;
 public class Broker {
 
     private List<Executor> executorList;
-    private List<Object> resultList;
+    private List<String> resultList;
     private GraphModel graphModelInstance;
 
     public Broker(GraphModel graphModelInstance) {
         this.graphModelInstance = graphModelInstance;
         this.executorList = new ArrayList<Executor>();
-        this.resultList = new ArrayList<Object>();
+        this.resultList = new ArrayList<String>();
     }
 
     public void receive(List<String> commandList) throws Exception {
@@ -39,20 +39,19 @@ public class Broker {
                 resultStr = String.format("Input #%d Command: %s\nOutput: \n", i, originalCommand) + resultStr;
                 this.resultList.add(resultStr);
             } catch (Exception e) {
-                this.resultList.add(String.format("Output #%d, %s : %s", i, originalCommand, e.getMessage()));
+                this.resultList.add(String.format("Output #%d, Command: %s : %s", i, originalCommand, e.getMessage()));
             }
             i += 1;
         }
     }
 
-    public List<Object> getResultList() {
+    public List<String> getResultList() {
         return this.resultList;
     }
 
     public String resultToString(List<RouteCounter> routeCounterList){
         String str = "";
         for(RouteCounter routeCounter: routeCounterList){
-//            int stops = routeCounter.getTotalStops();
             int distance = routeCounter.getTotalDistance();
             String nodeStr = String.join("", routeCounter.getStationNodeNameList());
             str += String.format("- route: %s, distance: %d \n", nodeStr, distance);

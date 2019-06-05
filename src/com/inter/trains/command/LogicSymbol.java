@@ -1,24 +1,18 @@
 package com.inter.trains.command;
 
-/**
- * only support eq, lt, le
- * eq  indicate ==
- * lt  indicate <
- * le  indicate <=
- */
-public enum OperSymbol {
+public enum LogicSymbol {
 
-    EQ("eq"), LT("lt"), LE("le");
+    AND("and"), OR("or");
 
     private String s;
 
-    private OperSymbol(String s) {
+    private LogicSymbol(String s) {
         this.s = s;
     }
 
     public static boolean contains(String name){
         try{
-            OperSymbol.valueOf(name.toUpperCase());
+            LogicSymbol.valueOf(name.toUpperCase());
             return true;
         }catch (Exception e){
             return false;

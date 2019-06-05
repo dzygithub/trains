@@ -63,7 +63,7 @@ public class Command {
             String[] routes = routesAndFilters[0].trim().split("-");
             cList.add(routes);
             if (routesAndFilters.length > 1) {
-                String[] filters = routesAndFilters[1].trim().split("&&");
+                String[] filters = routesAndFilters[1].trim().split("\\s+");
                 cList.add(this.parseCondition(filters));
             } else {
                 cList.add(new ArrayList<Condition>());
@@ -73,33 +73,34 @@ public class Command {
 
     }
 
-    private List<Condition> parseCondition(String[] filters) throws Exception {
+    private List<Condition> parseCondition(String[] ss) throws Exception {
         ArrayList<Condition> rsList = new ArrayList<Condition>();
-        for (String filterStr : filters) {
-            String[] ss = filterStr.split("\\s+");
-            if (ss.length == 0) {
-                continue;
-            }
-            if (ss.length != 3) {
-                throw new Exception("condition format is wrong.");
-            }
-            String keyWord = ss[0];
+        if ((ss.length + 1) % 4 != 0) {
+            throw new Exception("condition format is wrong.");
+        }
+        for (int i = -1; i < ss.length; i += 4) {
+            String logicSymbol = (i == -1) ? LogicSymbol.AND.toString() : ss[i];
+            String keyWord = ss[i + 1];
+            String symbol = ss[i + 2];
+            String value = ss[i + 3];
             if (!KeyWord.contains(keyWord)) {
                 throw new Exception(String.format("keyword of %s is not supported.", keyWord));
             }
-            String symbol = ss[1];
-            if (!OperSymbol.contains(symbol)) {
+            if (!LogicSymbol.contains(logicSymbol)) {
+                throw new Exception(String.format("logicSymbol of %s is not supported.", symbol));
+            }
+            if (!RelationSymbol.contains(symbol)) {
                 throw new Exception(String.format("operSymbol of %s is not supported.", symbol));
             }
-            String value = ss[2];
             try {
                 Integer.parseInt(value);
             } catch (Exception e) {
                 throw new Exception(String.format("value must be number, you provide is %s.", value));
             }
             Condition condition = new Condition(
+                    LogicSymbol.valueOf(logicSymbol.toUpperCase()),
                     KeyWord.valueOf(keyWord.toUpperCase()),
-                    OperSymbol.valueOf(symbol.toUpperCase()),
+                    RelationSymbol.valueOf(symbol.toUpperCase()),
                     Integer.parseInt(value));
             rsList.add(condition);
         }

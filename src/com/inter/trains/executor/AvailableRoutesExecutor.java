@@ -2,6 +2,8 @@ package com.inter.trains.executor;
 
 import com.inter.trains.command.Command;
 import com.inter.trains.command.Condition;
+import com.inter.trains.command.ConditionsFilter;
+import com.inter.trains.command.filter.Filter;
 import com.inter.trains.model.StationNode;
 import com.inter.trains.model.StationRoute;
 
@@ -29,6 +31,7 @@ public class AvailableRoutesExecutor extends BaseExecutor implements Executor<Li
 
     /**
      * DFS , recursive to search the available routes
+     *
      * @param startStationNode
      * @param counterT
      */
@@ -47,34 +50,16 @@ public class AvailableRoutesExecutor extends BaseExecutor implements Executor<Li
         RouteCounter rc = this.extendRouteCounter(routeCounter,
                 stationRoute.getStationNode().getName(),
                 stationRoute.getEdgeDistance());
-        int isMatch = this.matchCondition(rc);
-        if (isMatch < 0) {
+        int filterResult = this.filterCondition(rc);
+        if (filterResult < 0) {
             //not match, go back to parent node
             return;
         }
         String terminalStationName = this.getCommand().getRoutes()[1];
-        if (isMatch == 1 && stationRoute.getStationNode().getName().equals(terminalStationName)) {
+        if (filterResult == 1 && stationRoute.getStationNode().getName().equals(terminalStationName)) {
             this.getAvailableRouteCounterList().add(rc);
         }
         this.searchRoutes(stationRoute.getStationNode(), rc);
-    }
-
-    /*
-     *  return :
-     *          1   match to request condition
-     *          0   pending, need to execute further.
-     *         -1   not match to request condition
-     */
-    public int matchCondition(RouteCounter routeCounter) {
-        int isMatch = 1;
-        List<Condition> conditionList = this.getCommand().getConditionList();
-        for (Condition condition : conditionList) {
-            isMatch = this.compare(routeCounter, condition);
-            if (isMatch != 1) {
-                break;
-            }
-        }
-        return isMatch;
     }
 
     public void setCommand(Command command) throws Exception {

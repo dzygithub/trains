@@ -69,5 +69,22 @@ public class AvailableRoutesExecutorTest {
         assertEquals(7, availableRoutesCount);
     }
 
+    @Test
+    public void execute4() throws Exception {
+        command = new Command("AvailableRoutes? C-C : distance gt 20 and distance lt 30");
+        executor.setCommand(command);
+        List<RouteCounter> routeList = executor.execute();
+        int availableRoutesCount = (int)routeList.size();
+        assertEquals(7, availableRoutesCount);
+    }
+
+    @Test
+    public void execute5() throws Exception {
+        command = new Command("AvailableRoutes? C-C : distance lt 10 or stops le 3");
+        executor.setCommand(command);
+        List<RouteCounter> routeList = executor.execute();
+        int availableRoutesCount = (int)routeList.size();
+        assertEquals(2, availableRoutesCount);
+    }
 
 }

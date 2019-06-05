@@ -10,14 +10,17 @@ public class Condition {
 
     private KeyWord keyWord;
 
-    private OperSymbol operSymbol;
+    private RelationSymbol relationSymbol;
+
+    private LogicSymbol logicSymbol = LogicSymbol.AND;
 
     private int value;
 
-    public Condition(KeyWord keyWord, OperSymbol operSymbol, int value) {
+    public Condition(LogicSymbol logicSymbol, KeyWord keyWord, RelationSymbol relationSymbol, int value) {
         this.keyWord = keyWord;
-        this.operSymbol = operSymbol;
+        this.relationSymbol = relationSymbol;
         this.value = value;
+        this.logicSymbol = logicSymbol;
     }
 
     public Condition(KeyWord keyWord, int value) {
@@ -33,12 +36,12 @@ public class Condition {
         this.keyWord = keyWord;
     }
 
-    public OperSymbol getOperSymbol() {
-        return operSymbol;
+    public RelationSymbol getRelationSymbol() {
+        return relationSymbol;
     }
 
-    public void setOperSymbol(OperSymbol operSymbol) {
-        this.operSymbol = operSymbol;
+    public void setRelationSymbol(RelationSymbol relationSymbol) {
+        this.relationSymbol = relationSymbol;
     }
 
     public int getValue() {
@@ -53,12 +56,19 @@ public class Condition {
         this.value = value;
     }
 
+    public LogicSymbol getLogicSymbol() {
+        return logicSymbol;
+    }
+
+    public void setLogicSymbol(LogicSymbol logicSymbol) {
+        this.logicSymbol = logicSymbol;
+    }
 
     public static void main(String[] args) {
 
         String symbolStr = "le";
-        boolean symbol = OperSymbol.contains(symbolStr);
+        boolean symbol = RelationSymbol.contains(symbolStr);
         System.out.println(symbol);
-        System.out.println(OperSymbol.LE == OperSymbol.valueOf(symbolStr.toUpperCase()));
+        System.out.println(RelationSymbol.LE == RelationSymbol.valueOf(symbolStr.toUpperCase()));
     }
 }

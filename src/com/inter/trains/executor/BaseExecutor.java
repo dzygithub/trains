@@ -2,8 +2,9 @@ package com.inter.trains.executor;
 
 import com.inter.trains.command.Command;
 import com.inter.trains.command.Condition;
-import com.inter.trains.command.KeyWord;
-import com.inter.trains.command.OperSymbol;
+import com.inter.trains.command.ConditionsFilter;
+import com.inter.trains.command.LogicSymbol;
+import com.inter.trains.command.filter.Filter;
 import com.inter.trains.model.GraphModel;
 import com.inter.trains.model.StationNode;
 import com.inter.trains.model.StationRoutesWrap;
@@ -50,7 +51,7 @@ public abstract class BaseExecutor {
     public String[] getCommandRoutes() throws Exception {
         Map<String, StationNode> stationGraphMap = this.getStationGraphMap();
         String[] routeNames = this.getCommand().getRoutes();
-        for (String name: routeNames) {
+        for (String name : routeNames) {
             if (stationGraphMap.get(name) == null) {
                 throw new Exception("NO SUCH ROUTE");
             }
@@ -60,7 +61,7 @@ public abstract class BaseExecutor {
 
     public HashMap<String, StationNode> getStationGraphMap() throws Exception {
         HashMap<String, StationNode> stationGraphMap = this.getGraphModel().getStationGraphMap();
-        if(stationGraphMap == null || stationGraphMap.isEmpty()){
+        if (stationGraphMap == null || stationGraphMap.isEmpty()) {
             throw new Exception("No data in Graph.");
         }
         return stationGraphMap;
@@ -69,7 +70,7 @@ public abstract class BaseExecutor {
     /**
      * Calculate the distance of the two station. if there is no route. then raise exception of "NO SUCH ROUTE"
      * Note:
-     *     two stations must be directly connection, not other stops
+     * two stations must be directly connection, not other stops
      **/
     public int getDistance(StationNode startStationNode, StationNode nextStationNode) throws Exception {
         int distance = 0;
@@ -98,27 +99,29 @@ public abstract class BaseExecutor {
         return routeCounter;
     }
 
-
-    public int compare(RouteCounter routeCounter, Condition condition) {
-        int compareR = 1;
-        Integer conditionValue = condition.getValue();
-        OperSymbol operSymbol = condition.getOperSymbol();
-        KeyWord kw = condition.getKeyWord();
-        Integer compareV = (kw == KeyWord.DISTANCE) ? routeCounter.getTotalDistance() : routeCounter.getTotalStops();
-        if (operSymbol == OperSymbol.LE) {
-            compareR = (compareV <= conditionValue) ? 1 : -1;
-        } else if (operSymbol == OperSymbol.LT) {
-            compareR = (compareV < conditionValue) ? 1 : -1;
-        } else if (operSymbol == OperSymbol.EQ) {
-            boolean eqBool = compareV < conditionValue;
-            if (eqBool) {
-                compareR = 0;
-            } else {
-                compareR = (compareV == conditionValue) ? 1 : -1;
+    /*
+     *  return :
+     *          1   match to request condition
+     *          0   pending, need to execute further.
+     *         -1   not match to request condition
+     */
+    public int filterCondition(RouteCounter routeCounter) {
+        int filterResult = 1;
+        Filter filter = null, nextFilter = null;
+        List<Condition> conditionList = this.getCommand().getConditionList();
+        conditionList.sort((e2, e1) -> (e2.getLogicSymbol() == LogicSymbol.OR) ? -1 : 0);
+        for (Condition condition : conditionList) {
+            Filter curFilter = ConditionsFilter.createFilter(condition, routeCounter);
+            if(filter == null){
+                filter = nextFilter = curFilter;
+            }else{
+                nextFilter = nextFilter.addFilter(curFilter);
             }
         }
-        return compareR;
+        if (filter != null) {
+            filterResult = filter.doFilter(1);
+        }
+        return filterResult;
     }
-
 }
 

@@ -50,7 +50,7 @@ public class BrokerTest {
     public void submit() throws Exception {
         this.receive();
         this.broker.submit();
-        List<Object> resultList = this.broker.getResultList();
+        List<String> resultList = this.broker.getResultList();
         assertEquals("Output #1: 9", resultList.get(0).toString());
         assertEquals("Output #2: NO SUCH ROUTE", resultList.get(1).toString());
     }
