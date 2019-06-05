@@ -2,6 +2,7 @@ package com.inter.trains;
 
 import com.inter.trains.executor.Executor;
 import com.inter.trains.executor.ExecutorFactory;
+import com.inter.trains.executor.RouteCounter;
 import com.inter.trains.model.GraphModel;
 
 import java.util.ArrayList;
@@ -29,13 +30,16 @@ public class Broker {
 
     public void submit() {
         int i = 1;
+        String originalCommand = "";
         for (Executor req : this.executorList) {
             try {
-                //String originalCommand = req.getCommand().getOriginalCommand();
-                Object result = req.execute();
-                this.resultList.add(String.format("Output #%d: %s", i, result));
+                originalCommand = req.getCommand().getOriginalCommand();
+                List<RouteCounter> routeCounterList = (List<RouteCounter>)req.execute();
+                String resultStr = this.resultToString(routeCounterList);
+                resultStr = String.format("Input #%d Command: %s\nOutput: \n", i, originalCommand) + resultStr;
+                this.resultList.add(resultStr);
             } catch (Exception e) {
-                this.resultList.add(String.format("Output #%d: %s", i, e.getMessage()));
+                this.resultList.add(String.format("Output #%d, %s : %s", i, originalCommand, e.getMessage()));
             }
             i += 1;
         }
@@ -45,5 +49,14 @@ public class Broker {
         return this.resultList;
     }
 
-
+    public String resultToString(List<RouteCounter> routeCounterList){
+        String str = "";
+        for(RouteCounter routeCounter: routeCounterList){
+//            int stops = routeCounter.getTotalStops();
+            int distance = routeCounter.getTotalDistance();
+            String nodeStr = String.join("", routeCounter.getStationNodeNameList());
+            str += String.format("- route: %s, distance: %d \n", nodeStr, distance);
+        }
+        return str;
+    }
 }

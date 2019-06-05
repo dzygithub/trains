@@ -1,7 +1,6 @@
 package com.inter.trains.executor;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,4 +44,5 @@ public class RouteCounter {
     public void setTotalStops(Integer totalStops) {
         this.totalStops = totalStops;
     }
+
 }

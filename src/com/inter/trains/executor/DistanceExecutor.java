@@ -10,7 +10,7 @@ import java.util.*;
  * EG:
  * The distance of the route A-B-C
  */
-public class DistanceExecutor extends BaseExecutor implements Executor<Integer> {
+public class DistanceExecutor extends BaseExecutor implements Executor<List<RouteCounter>> {
 
 
     public DistanceExecutor() {
@@ -18,7 +18,7 @@ public class DistanceExecutor extends BaseExecutor implements Executor<Integer> 
     }
 
     @Override
-    public Integer execute() throws Exception {
+    public List<RouteCounter> execute() throws Exception {
         int distance = 0;
         Map<String, StationNode> stationGraphMap = this.getStationGraphMap();
         String[] routeNames = this.getCommandRoutes();
@@ -27,7 +27,12 @@ public class DistanceExecutor extends BaseExecutor implements Executor<Integer> 
             StationNode endStationNode = stationGraphMap.get(routeNames[i + 1]);
             distance += this.getDistance(startStationNode, endStationNode);
         }
-        return distance;
+        RouteCounter routeCounter = new RouteCounter();
+        routeCounter.setTotalDistance(distance);
+        routeCounter.setTotalStops(routeNames.length);
+        routeCounter.setStationNodeNameList(Arrays.asList(routeNames));
+        this.getAvailableRouteCounterList().add(routeCounter);
+        return this.getAvailableRouteCounterList();
     }
 
 }

@@ -14,17 +14,17 @@ import java.util.Map;
  * EG:
  * The number of trips starting at C and ending at C with a maximum of 3 stops.
  */
-public class AvailableRoutesExecutor extends BaseExecutor implements Executor<Integer> {
+public class AvailableRoutesExecutor extends BaseExecutor implements Executor<List<RouteCounter>> {
 
 
     @Override
-    public Integer execute() throws Exception {
+    public List<RouteCounter> execute() throws Exception {
         Map<String, StationNode> stationGraphMap = this.getStationGraphMap();
         String[] routeNames = this.getCommandRoutes();
         String startStationName = routeNames[0];
         StationNode startStationNode = stationGraphMap.get(startStationName);
         this.searchRoutes(startStationNode, null);
-        return this.getAvailableRouteCounterList().size();
+        return this.getAvailableRouteCounterList();
     }
 
     /**
@@ -62,7 +62,7 @@ public class AvailableRoutesExecutor extends BaseExecutor implements Executor<In
     /*
      *  return :
      *          1   match to request condition
-     *          0   suspending, need to execute further.
+     *          0   pending, need to execute further.
      *         -1   not match to request condition
      */
     public int matchCondition(RouteCounter routeCounter) {

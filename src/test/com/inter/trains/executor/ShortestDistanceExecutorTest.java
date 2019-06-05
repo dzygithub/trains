@@ -2,9 +2,12 @@ package test.com.inter.trains.executor;
 
 import com.inter.trains.command.Command;
 import com.inter.trains.executor.BaseExecutor;
+import com.inter.trains.executor.RouteCounter;
 import com.inter.trains.executor.ShortestDistanceExecutor;
 import com.inter.trains.model.GraphModel;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -41,7 +44,8 @@ public class ShortestDistanceExecutorTest {
     public void execute1() throws Exception {
         command = new Command("ShortestDistance? A-C");
         executor.setCommand(command);
-        int shortestDistance = executor.execute();
+        List<RouteCounter> shortestDistanceRouteList = executor.execute();
+        int shortestDistance = (int)shortestDistanceRouteList.get(0).getTotalDistance();
         assertEquals(9, shortestDistance);
     }
 
@@ -49,7 +53,8 @@ public class ShortestDistanceExecutorTest {
     public void execute2() throws Exception {
         command = new Command("ShortestDistance? C-C");
         executor.setCommand(command);
-        int shortestDistance = executor.execute();
+        List<RouteCounter> shortestDistanceRouteList = executor.execute();
+        int shortestDistance = (int)shortestDistanceRouteList.get(0).getTotalDistance();
         assertEquals(9, shortestDistance);
     }
 }

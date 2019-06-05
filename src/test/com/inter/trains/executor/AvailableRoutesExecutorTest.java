@@ -2,9 +2,12 @@ package test.com.inter.trains.executor;
 
 import com.inter.trains.command.Command;
 import com.inter.trains.executor.AvailableRoutesExecutor;
+import com.inter.trains.executor.RouteCounter;
 import com.inter.trains.executor.ShortestDistanceExecutor;
 import com.inter.trains.model.GraphModel;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -42,16 +45,18 @@ public class AvailableRoutesExecutorTest {
     public void execute1() throws Exception {
         command = new Command("AvailableRoutes? C-C : stops le 3");
         executor.setCommand(command);
-        int shortestDistance = executor.execute();
-        assertEquals(2, shortestDistance);
+        List<RouteCounter> routeList = executor.execute();
+        int availableRoutesCount = (int)routeList.size();
+        assertEquals(2, availableRoutesCount);
     }
 
     @Test
     public void execute2() throws Exception {
         command = new Command("AvailableRoutes? A-C : stops eq 4");
         executor.setCommand(command);
-        int shortestDistance = executor.execute();
-        assertEquals(3, shortestDistance);
+        List<RouteCounter> routeList = executor.execute();
+        int availableRoutesCount = (int)routeList.size();
+        assertEquals(3, availableRoutesCount);
     }
 
 
@@ -59,8 +64,9 @@ public class AvailableRoutesExecutorTest {
     public void execute3() throws Exception {
         command = new Command("AvailableRoutes? C-C : distance lt 30");
         executor.setCommand(command);
-        int shortestDistance = executor.execute();
-        assertEquals(7, shortestDistance);
+        List<RouteCounter> routeList = executor.execute();
+        int availableRoutesCount = (int)routeList.size();
+        assertEquals(7, availableRoutesCount);
     }
 
 

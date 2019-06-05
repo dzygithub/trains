@@ -12,7 +12,7 @@ import java.util.Map;
  * EG:
  * The length of the shortest route (in terms of distance to travel) from B to B
  */
-public class ShortestDistanceExecutor extends BaseExecutor implements Executor<Integer> {
+public class ShortestDistanceExecutor extends BaseExecutor implements Executor<List<RouteCounter>> {
 
 
     /*
@@ -29,14 +29,14 @@ public class ShortestDistanceExecutor extends BaseExecutor implements Executor<I
 
 
     @Override
-    public Integer execute() throws Exception {
+    public List<RouteCounter> execute() throws Exception {
         Map<String, StationNode> stationGraphMap = this.getStationGraphMap();
         String[] routeNames = this.getCommandRoutes();
         String startStationName = routeNames[0];
         StationNode startStationNode = stationGraphMap.get(startStationName);
         this.searchShortest(startStationNode, null);
         if (this.getAvailableRouteCounterList().size() > 0) {
-            return this.getAvailableRouteCounterList().get(0).getTotalDistance();
+            return this.getAvailableRouteCounterList();
         } else {
             throw new Exception("NO SUCH ROUTE");
         }

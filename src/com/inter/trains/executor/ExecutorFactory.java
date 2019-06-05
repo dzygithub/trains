@@ -22,6 +22,7 @@ public class ExecutorFactory {
 
     /**
      * create executor instance leverage reflect mechanism
+     *
      * @param commandStr string
      * @return
      * @throws Exception
@@ -35,7 +36,7 @@ public class ExecutorFactory {
             Class<Executor> calClass = (Class<Executor>) Class.forName(sb.toString());
             Constructor<Executor> calClassConstructor = calClass.getConstructor();
             executor = calClassConstructor.newInstance();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(String.format("command for %s not supported.", command.getExecutorName()));
         }
         executor.setCommand(command);
