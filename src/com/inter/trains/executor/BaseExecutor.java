@@ -111,11 +111,10 @@ public abstract class BaseExecutor {
         List<Condition> conditionList = this.getCommand().getConditionList();
         conditionList.sort((e2, e1) -> (e2.getLogicSymbol() == LogicSymbol.OR) ? -1 : 0);
         for (Condition condition : conditionList) {
-            Filter curFilter = ConditionsFilter.createFilter(condition, routeCounter);
             if(filter == null){
-                filter = nextFilter = curFilter;
+                filter = nextFilter = ConditionsFilter.createFilter(condition, routeCounter);
             }else{
-                nextFilter = nextFilter.addFilter(curFilter);
+                nextFilter = nextFilter.addFilter(ConditionsFilter.createFilter(condition, routeCounter));
             }
         }
         if (filter != null) {
