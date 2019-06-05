@@ -9,7 +9,7 @@ public class AbstractFilter implements Filter {
 
     private Condition condition;
 
-    Filter nextFilter;
+    private Filter nextFilter;
 
     private RouteCounter routeCounter;
 
