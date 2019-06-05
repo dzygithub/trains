@@ -8,3 +8,6 @@ AvailableRoutes? A-C : stops eq 4
 ShortestDistance? A-C
 ShortestDistance? B-B
 AvailableRoutes? C-C : distance lt 30
+AvailableRoutes? C-C : distance gt 20 and distance lt 30
+AvailableRoutes? C-C : distance gt 20 and stops le 4
+AvailableRoutes? C-C : distance gt 20 and stops le 5
