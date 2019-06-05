@@ -51,7 +51,9 @@ public class BrokerTest {
         this.receive();
         this.broker.submit();
         List<String> resultList = this.broker.getResultList();
-        assertEquals("Output #1: 9", resultList.get(0).toString());
-        assertEquals("Output #2: NO SUCH ROUTE", resultList.get(1).toString());
+        assertEquals("Input #1 Command: Distance? A-B-C\n" +
+                "Output: \n" +
+                "- route: ABC, distance: 9 \n", resultList.get(0).toString());
+        assertEquals("Output #2, Command: Distance? A-E-D : NO SUCH ROUTE", resultList.get(1).toString());
     }
 }

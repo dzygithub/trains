@@ -39,7 +39,7 @@ public class AbstractFilter implements Filter {
             return preFilterResult;
         }
         if (condition.getLogicSymbol() == LogicSymbol.AND) {
-            if ((preFilterResult == 0 || preFilterResult == 1)) {
+            if (preFilterResult == 1) {
                 return this.nextFilter.doFilter(preFilterResult);
             }
         } else if (condition.getLogicSymbol() == LogicSymbol.OR) {

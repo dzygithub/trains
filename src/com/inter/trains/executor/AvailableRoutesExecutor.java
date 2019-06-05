@@ -1,9 +1,6 @@
 package com.inter.trains.executor;
 
 import com.inter.trains.command.Command;
-import com.inter.trains.command.Condition;
-import com.inter.trains.command.ConditionsFilter;
-import com.inter.trains.command.filter.Filter;
 import com.inter.trains.model.StationNode;
 import com.inter.trains.model.StationRoute;
 

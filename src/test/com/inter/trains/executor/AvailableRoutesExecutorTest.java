@@ -75,7 +75,7 @@ public class AvailableRoutesExecutorTest {
         executor.setCommand(command);
         List<RouteCounter> routeList = executor.execute();
         int availableRoutesCount = (int)routeList.size();
-        assertEquals(7, availableRoutesCount);
+        assertEquals(4, availableRoutesCount);
     }
 
     @Test

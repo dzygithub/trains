@@ -19,7 +19,12 @@ public class GeFilter extends AbstractFilter {
         Integer conditionValue = condition.getValue();
         KeyWord kw = condition.getKeyWord();
         Integer compareV = (kw == KeyWord.DISTANCE) ? routeCounter.getTotalDistance() : routeCounter.getTotalStops();
-        compareR = (compareV >= conditionValue) ? 1 : -1;
+        boolean eqBool = compareV < conditionValue;
+        if (eqBool) {
+            compareR = 0;
+        } else {
+            compareR = (compareV >= conditionValue) ? 1 : -1;
+        }
         return super.doFilter(compareR);
     }
 
